@@ -46,7 +46,22 @@ FG_ERROR = "#f38ba8"        # أحمر للأخطاء
 FG_SUCCESS = "#a6e3a1"      # أخضر للنجاح
 
 # ============ مسار ملف الإعدادات ============
-CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")
+def get_config_path():
+    """مسار ثابت للإعدادات في Documents - عشان يشتغل من أي مكان"""
+    try:
+        documents = os.path.join(os.path.expanduser("~"), "Documents")
+        if not os.path.exists(documents):
+            documents = os.path.expanduser("~")
+    except:
+        documents = os.path.dirname(os.path.abspath(__file__))
+
+    config_dir = os.path.join(documents, "PDF-Translator")
+    os.makedirs(config_dir, exist_ok=True)
+
+    return os.path.join(config_dir, "config.json")
+
+
+CONFIG_FILE = get_config_path()
 
 
 def load_config():
